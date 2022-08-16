@@ -2,24 +2,25 @@ package main
 
 import (
 	"fmt"
-	"github.com/rohit/go-fiber/lead"
+
 	"github.com/gofiber/fiber"
 	"github.com/jinzhu/gorm"
 	"github.com/rohit/go-fiber/database"
+	"github.com/rohit/go-fiber/lead"
 )
 
-func setuproutes(app *fiber.App)  {
-	app.Get("/api/v1/lead",lead.GetLeads)
-	app.Post("/api/v1/lead",lead.NewLead)
-	app.Delete("/api/v1/lead/:id",lead.DeleteLead)
-	app.Get("/api/v1/lead/:id",lead.GetLead)
+func setuproutes(app *fiber.App) {
+	app.Get("/api/v1/lead", lead.GetLeads)
+	app.Post("/api/v1/lead", lead.NewLead)
+	app.Delete("/api/v1/lead/:id", lead.DeleteLead)
+	app.Get("/api/v1/lead/:id", lead.GetLead)
 
 }
 
-func initDatabase()  {
+func initDatabase() {
 	var err error
-	database.DBconn,err = gorm.Open("sqlite3","lead.db")
-	if err != nil{
+	database.DBconn, err = gorm.Open("sqlite3", "lead.db")
+	if err != nil {
 		panic("failed to connect database")
 	}
 	fmt.Println("connection opened to database")
@@ -27,10 +28,10 @@ func initDatabase()  {
 	fmt.Println("database Migrated")
 }
 
-func main()  {
+func main() {
 	app := fiber.New()
 	initDatabase()
-    setuproutes(app)
+	setuproutes(app)
 	app.Listen(4000)
 	defer database.DBconn.Close()
 }
